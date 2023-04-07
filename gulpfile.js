@@ -38,7 +38,7 @@ gulp.task('pug', function(){
 });
 
 //Force compile pug on build
-gulp.task('build', gulp.series(gulp.parallel('pug')));
+gulp.task('build', gulp.series(gulp.parallel('pug'), gulp.series('sass')));
 
 //Auto compile pug, sass and src on update
 gulp.task('watch', function(){
