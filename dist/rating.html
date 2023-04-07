@@ -1,0 +1,566 @@
+
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>XRadio</title>
+    <link rel="stylesheet" href="css/main.css"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" src="js/main.js"></script>
+  </head>
+  <body>
+    <div class="container pe-5 ps-5 pb-5 bg-dark text-white">
+      <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+        <div class="container-fluid">
+          <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="index.html">Главная</a></li>
+            <li class="nav-item"><a class="nav-link" href="rating.html">Самые прослушиваемые треки</a></li>
+            <li class="nav-item"><a class="nav-link" href="#1">Лучшие радиостанции</a></li>
+            <li class="nav-item"><a class="nav-link" href="#2">Новости</a></li>
+          </ul>
+        </div>
+      </nav>
+      <hr/>
+      <details open="open">
+        <summary>Дополнительно</summary>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-12">
+                <p class="h3">График</p>
+                <form>
+                  <table class="table table-dark table-borderless">
+                    <tbody>
+                      <tr class="table-secondary">
+                        <th>Значениe по оси OX</th>
+                        <th>Результат</th>
+                      </tr>
+                      <tr>
+                        <td>
+                          <input type="radio" name="ox1" value="0"/>
+                          <label class="form-label" for="ox1">Среднее время прослушивания</label>
+                        </td>
+                        <td>
+                          <input type="checkbox" name="oy1" value="0"/>
+                          <label class="form-label" for="oy1">Радиостанция</label>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <input type="radio" name="ox2" value="1"/>
+                          <label class="form-label" for="ox2">Длительность</label>
+                        </td>
+                        <td>
+                          <input type="checkbox" name="oy2" value="1"/>
+                          <label class="form-label" for="oy2">Количество треков</label>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <input type="radio" name="ox3" value="3"/>
+                          <label class="form-label" for="ox3">Включений за месяц</label>
+                        </td>
+                        <td>
+                          <input type="checkbox" name="oy3" value="3"/>
+                          <label class="form-label" for="oy3">Разница в С.В.П. и Д.</label>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </form>
+              </div>
+              <div class="col-12">
+                <button type="submit">Построить</button>
+                <p>Здесь будет график</p>
+                <p class="h3">Сортировка</p>
+                <form id="sort-form" method="post" onsubmit="return SortByForm(event)">
+                  <table class="table table-dark">
+                    <thead> 
+                      <tr>
+                        <th>Уровни сортировки</th>
+                        <th>Порядок сортировки</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> 
+                          <select class="form-select" name="sort-1">
+                            <option value="0">Нет</option>
+                            <option value="1">Название</option>
+                            <option value="2">Включений за месяц</option>
+                            <option value="3">Среднее время прослушивания</option>
+                            <option value="4">Радиостанция</option>
+                            <option value="5">Длительность</option>
+                          </select>
+                        </td>
+                        <td> 
+                          <input class="btn btn-secondary" type="button" name="sort-btn-1" value="По возрастанию"/>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> 
+                          <select class="form-select" name="sort-2" disabled="disabled">
+                            <option value="0">Нет</option>
+                            <option value="1">Название</option>
+                            <option value="2">Включений за месяц</option>
+                            <option value="3">Среднее время прослушивания</option>
+                            <option value="4">Радиостанция</option>
+                            <option value="5">Длительность</option>
+                          </select>
+                        </td>
+                        <td> 
+                          <input class="btn btn-secondary" type="button" name="sort-btn-2" value="По возрастанию"/>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> 
+                          <select class="form-select" name="sort-3" disabled="disabled">
+                            <option value="0">Нет</option>
+                            <option value="1">Название</option>
+                            <option value="2">Включений за месяц</option>
+                            <option value="3">Среднее время прослушивания</option>
+                            <option value="4">Радиостанция</option>
+                            <option value="5">Длительность</option>
+                          </select>
+                        </td>
+                        <td> 
+                          <input class="btn btn-secondary" type="button" name="sort-btn-3" value="По возрастанию"/>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <button type="submit">Сортировать</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <p class="h3">Фильтр</p>
+            <form id="filter-form" method="post" onsubmit="return FilterByForm(event)">
+              <p>
+                <label class="form-label" for="name">Название:</label>
+                <input class="form-control" type="text" id="name" placeholder="Введите название..."/>
+              </p>
+              <p>
+                <label class="form-label" for="vkl">Включений за месяц:</label>
+                <input class="form-control" type="text" id="vkl" placeholder="Введите количество включений..."/>
+              </p>
+              <p>
+                <label class="form-label" for="avgmin">Минимальное среднее время прослушивания:</label>
+                <input class="form-control" type="text" id="avgmin" placeholder="Введите минимальное среднее время прослушивания..."/>
+              </p>
+              <p>
+                <label class="form-label" for="avgmax">Максимальное среднее время прослушивания:</label>
+                <input class="form-control" type="text" id="avgmax" placeholder="Введите максимальное среднее время прослушивания..."/>
+              </p>
+              <p>
+                <label class="form-label" for="radio">Радиостанция:</label>
+                <input class="form-control" type="text" id="radio" placeholder="Введите название радиостанции..."/>
+              </p>
+              <p>
+                <label class="form-label" for="lengthmin">Минммальную длительность трека:</label>
+                <input class="form-control" type="text" id="lengthmin" placeholder="Введите минммальную длительность..."/>
+              </p>
+              <p>
+                <label class="form-label" for="lengthmax">Максимальную длительность трека:</label>
+                <input class="form-control" type="text" id="lengthmax" placeholder="Введите максимальную длительность..."/>
+              </p>
+              <button type="submit">Найти</button>
+            </form>
+          </div>
+        </div>
+      </details>
+      <table class="table table-dark table-striped table-bordered" id="table">
+        <thead>
+          <tr class="table-secondary">
+            <th onclick="SortByTh(this)">Название</th>
+            <th onclick="SortByTh(this)">Включений за месяц</th>
+            <th onclick="SortByTh(this)">Среднее время прослушивания</th>
+            <th onclick="SortByTh(this)">Радиостанция</th>
+            <th onclick="SortByTh(this)">Длительность</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>SHAMAN — ВЫЗОВ саундтрек к шоу ТНТ Вызов</td>
+            <td>37</td>
+            <td>2:49</td>
+            <td>Авторадио</td>
+            <td>3:19</td>
+          </tr>
+          <tr>
+            <td>Фейгин - Ливни Листопады</td>
+            <td>36</td>
+            <td>2:06</td>
+            <td>Авторадио</td>
+            <td>2:16</td>
+          </tr>
+          <tr>
+            <td>Mary Gu - Калифорния</td>
+            <td>34</td>
+            <td>7:27</td>
+            <td>Авторадио</td>
+            <td>7:37</td>
+          </tr>
+          <tr>
+            <td>Винтаж — Лети за солнцем Filatov & Karas Mix</td>
+            <td>34</td>
+            <td>9:23</td>
+            <td>Авторадио</td>
+            <td>9:33</td>
+          </tr>
+          <tr>
+            <td>DJ SMASH & NIVESTA - Позвони</td>
+            <td>34</td>
+            <td>8:16</td>
+            <td>Авторадио</td>
+            <td>8:26</td>
+          </tr>
+          <tr>
+            <td>Все Звёзды - Гимн Авторадио</td>
+            <td>33</td>
+            <td>6:20</td>
+            <td>Авторадио</td>
+            <td>6:30</td>
+          </tr>
+          <tr>
+            <td>Люся Чеботина - ПЛАКАЛ ГОЛЛИВУД</td>
+            <td>32</td>
+            <td>3:44</td>
+            <td>Авторадио</td>
+            <td>3:54</td>
+          </tr>
+          <tr>
+            <td>Сергей Лазарев - Танцуй</td>
+            <td>29</td>
+            <td>4:30</td>
+            <td>Авторадио</td>
+            <td>4:40</td>
+          </tr>
+          <tr>
+            <td>ANIVAR - Билет в бесконечность</td>
+            <td>27</td>
+            <td>5:07</td>
+            <td>Авторадио</td>
+            <td>5:17</td>
+          </tr>
+          <tr>
+            <td>Burito - Она</td>
+            <td>27</td>
+            <td>5:34</td>
+            <td>Авторадио</td>
+            <td>6:44</td>
+          </tr>
+          <tr>
+            <td>Моя Мишель Dose - Пташка</td>
+            <td>26</td>
+            <td>7:07</td>
+            <td>Авторадио</td>
+            <td>8:17</td>
+          </tr>
+          <tr>
+            <td>Владимир Пресняков – Синяя птица</td>
+            <td>24</td>
+            <td>2:12</td>
+            <td>Авторадио</td>
+            <td>2:22</td>
+          </tr>
+          <tr>
+            <td>Люся Чеботина - Солнце Монако</td>
+            <td>19</td>
+            <td>7:18</td>
+            <td>Авторадио</td>
+            <td>8:28</td>
+          </tr>
+          <tr>
+            <td>JONY - Никак</td>
+            <td>17</td>
+            <td>5:35</td>
+            <td>Авторадио</td>
+            <td>5:45</td>
+          </tr>
+          <tr>
+            <td>DJ SMASH Artik & Asti - CO2</td>
+            <td>16</td>
+            <td>6:20</td>
+            <td>Авторадио</td>
+            <td>6:30</td>
+          </tr>
+          <tr>
+            <td>Zivert - WAKE UP</td>
+            <td>16</td>
+            <td>1:42</td>
+            <td>Авторадио</td>
+            <td>1:52</td>
+          </tr>
+          <tr>
+            <td>Ваня Дмитриенко - Вечно молодым OST "Струны"</td>
+            <td>16</td>
+            <td>8:40</td>
+            <td>Авторадио</td>
+            <td>8:50</td>
+          </tr>
+          <tr>
+            <td>Звонкий – Вот и всё</td>
+            <td>15</td>
+            <td>3:40</td>
+            <td>Авторадио</td>
+            <td>3:50</td>
+          </tr>
+          <tr>
+            <td>Dabro - Мне не страшно Песня про брата</td>
+            <td>15</td>
+            <td>5:05</td>
+            <td>Авторадио</td>
+            <td>6:15</td>
+          </tr>
+          <tr>
+            <td>Лолита & Коста Лакоста — По-другому</td>
+            <td>15</td>
+            <td>1:24</td>
+            <td>Авторадио</td>
+            <td>1:34</td>
+          </tr>
+          <tr>
+            <td>Татьяна Буланова - Поезда</td>
+            <td>29</td>
+            <td>4:21</td>
+            <td>Дорожное радио</td>
+            <td>4:50</td>
+          </tr>
+          <tr>
+            <td>Владимир Пресняков – У тебя есть я</td>
+            <td>29</td>
+            <td>2:49</td>
+            <td>Дорожное радио</td>
+            <td>3:15</td>
+          </tr>
+          <tr>
+            <td>Денис Клявер - Тебя удача найдёт</td>
+            <td>27</td>
+            <td>5:01</td>
+            <td>Дорожное радио</td>
+            <td>5:28</td>
+          </tr>
+          <tr>
+            <td>Денис Майданов - Молодость моя</td>
+            <td>26</td>
+            <td>3:45</td>
+            <td>Дорожное радио</td>
+            <td>3:45</td>
+          </tr>
+          <tr>
+            <td>Группа ПЯТЕRО и Лев Лещенко с песней "Все было да прошло"</td>
+            <td>25</td>
+            <td>3:04</td>
+            <td>Дорожное радио</td>
+            <td>3:23</td>
+          </tr>
+          <tr>
+            <td>Александр Устюгов - Попутчица</td>
+            <td>25</td>
+            <td>4:21</td>
+            <td>Дорожное радио</td>
+            <td>5:24</td>
+          </tr>
+          <tr>
+            <td>Лолита – Грустная танцую</td>
+            <td>24</td>
+            <td>1:50</td>
+            <td>Дорожное радио</td>
+            <td>2:10</td>
+          </tr>
+          <tr>
+            <td>Валерия - Потеряла сердце</td>
+            <td>24</td>
+            <td>5:32</td>
+            <td>Дорожное радио</td>
+            <td>5:42</td>
+          </tr>
+          <tr>
+            <td>Елена Воробей Красное и белое</td>
+            <td>21</td>
+            <td>1:27</td>
+            <td>Дорожное радио</td>
+            <td>1:28</td>
+          </tr>
+          <tr>
+            <td>Dabro - Мне не страшно Песня про брата</td>
+            <td>17</td>
+            <td>6:00</td>
+            <td>Дорожное радио</td>
+            <td>6:50</td>
+          </tr>
+          <tr>
+            <td>Александр Иванов и группа Рондо — Стрелой</td>
+            <td>16</td>
+            <td>1:40</td>
+            <td>Дорожное радио</td>
+            <td>1:50</td>
+          </tr>
+          <tr>
+            <td>Юлия Проскурякова - Журавлик I Новая Красивая песня о любви I</td>
+            <td>15</td>
+            <td>1:32</td>
+            <td>Дорожное радио</td>
+            <td>1:32</td>
+          </tr>
+          <tr>
+            <td>ANNA ASTI & Филипп Киркоров — Хобби</td>
+            <td>15</td>
+            <td>5:18</td>
+            <td>Дорожное радио</td>
+            <td>6:16</td>
+          </tr>
+          <tr>
+            <td>ANIVAR - Билет в бесконечность</td>
+            <td>15</td>
+            <td>2:49</td>
+            <td>Дорожное радио</td>
+            <td>2:51</td>
+          </tr>
+          <tr>
+            <td>JONY - Титры</td>
+            <td>54</td>
+            <td>4:49</td>
+            <td>Русское радио</td>
+            <td>5:49</td>
+          </tr>
+          <tr>
+            <td>EMIN - на обратной стороне</td>
+            <td>50</td>
+            <td>5:28</td>
+            <td>Русское радио</td>
+            <td>5:48</td>
+          </tr>
+          <tr>
+            <td>ХАННА - Море</td>
+            <td>48</td>
+            <td>3:17</td>
+            <td>Русское радио</td>
+            <td>3:27</td>
+          </tr>
+          <tr>
+            <td>Ночь расскажет</td>
+            <td>47</td>
+            <td>1:15</td>
+            <td>Русское радио</td>
+            <td>1:25</td>
+          </tr>
+          <tr>
+            <td>ANNA ASTI - По барам</td>
+            <td>44</td>
+            <td>2:36</td>
+            <td>Русское радио</td>
+            <td>2:46</td>
+          </tr>
+          <tr>
+            <td>Слава Анна Семенович – Бумеранг</td>
+            <td>43</td>
+            <td>2:48</td>
+            <td>Русское радио</td>
+            <td>2:58</td>
+          </tr>
+          <tr>
+            <td>Filatov & Karas — Движ</td>
+            <td>43</td>
+            <td>5:17</td>
+            <td>Русское радио</td>
+            <td>5:27</td>
+          </tr>
+          <tr>
+            <td>Сергей Лазарев - Танцуй</td>
+            <td>41</td>
+            <td>6:30</td>
+            <td>Русское радио</td>
+            <td>6:40</td>
+          </tr>
+          <tr>
+            <td>Ирина Дубцова & Natan – Давай обнимемся в последний раз</td>
+            <td>40</td>
+            <td>4:12</td>
+            <td>Русское радио</td>
+            <td>4:22</td>
+          </tr>
+          <tr>
+            <td>Полина Гагарина & Дима Билан ― Души сингла</td>
+            <td>39</td>
+            <td>2:24</td>
+            <td>Русское радио</td>
+            <td>2:34</td>
+          </tr>
+          <tr>
+            <td>Владимир Пресняков – Синяя птица</td>
+            <td>38</td>
+            <td>2:01</td>
+            <td>Русское радио</td>
+            <td>2:11</td>
+          </tr>
+          <tr>
+            <td>Лариса Долина - Двое На Ветру Clip Remastered</td>
+            <td>38</td>
+            <td>1:11</td>
+            <td>Русское радио</td>
+            <td>1:21</td>
+          </tr>
+          <tr>
+            <td>Artik & Asti - Гармония</td>
+            <td>34</td>
+            <td>5:19</td>
+            <td>Русское радио</td>
+            <td>5:29</td>
+          </tr>
+          <tr>
+            <td>Наталья Подольская - Такая сильная любовь</td>
+            <td>32</td>
+            <td>1:27</td>
+            <td>Русское радио</td>
+            <td>1:37</td>
+          </tr>
+          <tr>
+            <td>Марина Бриз - Не трогай меня</td>
+            <td>32</td>
+            <td>3:17</td>
+            <td>Русское радио</td>
+            <td>3:27</td>
+          </tr>
+          <tr>
+            <td>Юлия Савичева - Синоптики</td>
+            <td>31</td>
+            <td>4:36</td>
+            <td>Русское радио</td>
+            <td>4:46</td>
+          </tr>
+          <tr>
+            <td>Стас Костюшкин - Останешься</td>
+            <td>31</td>
+            <td>5:20</td>
+            <td>Русское радио</td>
+            <td>5:30</td>
+          </tr>
+          <tr>
+            <td>Dabro - Услышит весь район</td>
+            <td>31</td>
+            <td>4:05</td>
+            <td>Русское радио</td>
+            <td>4:15</td>
+          </tr>
+          <tr>
+            <td>Люся Чеботина - Солнце Монако</td>
+            <td>30</td>
+            <td>3:12</td>
+            <td>Русское радио</td>
+            <td>3:22</td>
+          </tr>
+          <tr>
+            <td>Валерия — Синица OST Я хочу Я буду</td>
+            <td>30</td>
+            <td>2:02</td>
+            <td>Русское радио</td>
+            <td>2:12</td>
+          </tr>
+        </tbody>
+      </table>
+      <hr/>
+    </div>
+  </body>
+</html>

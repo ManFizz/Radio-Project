@@ -3,10 +3,15 @@ html(lang='ru')
     meta(charset='UTF-8')
     title XRadio
     link(rel="stylesheet", href="css/main.css")
+    link(rel="stylesheet", href="css/bootstrap.min.css")
+    script(type="text/javascript" src="js/main.js")
   body
-    div.container
-        .flex.menu
+    .container.pe-5.ps-5.pb-5.bg-dark.text-white
+      nav.navbar.navbar-expand-sm.bg-dark.navbar-dark.fixed-top
+        .container-fluid
+          ul.navbar-nav
             each name, link in {'index.html':'Главная', 'rating.html':'Самые прослушиваемые треки', '#1':'Лучшие радиостанции', '#2':'Новости'}
-                a(href=link) #{name}
-        hr
-        block content
+              li.nav-item
+                a.nav-link(href=link) #{name}
+      hr
+      block content

@@ -1,101 +1,120 @@
 extends template
 block content
-  details
-    summary  График 
-    form
-      table
-        tbody
-          tr
-            th Значениe по оси OX
-            th Результат
-          tr
-            td
-              input(type='radio' name='ox' value='0')
-              | Среднее время прослушивания
-              br
-              input(type='radio' name='ox' value='1')
-              | Длительность
-              br
-              input(type='radio' name='ox' value='3')
-              | Включений за месяц
-              br
-            td
-              input(type='checkbox' name='oy' value='0')
-              | Радиостанция
-              br
-              input(type='checkbox' name='oy' value='1')
-              | Количество треков
-              br
-              input(type='checkbox' name='oy' value='3')
-              | Разница в С.В.П. и Д.
-              br
-      input(type='button' value='Построить')
-      p Здесь будет график
-  details
-    summary  Фильтр
-    form
-      p
-        label(for='name') Название:
-        input(type='text' id='name')
-      p
-        label(for='vkl') Включений за месяц:
-        input(type='text' id='vkl')
-      p
-        label(for='avg') Среднее время прослушивания:
-        input(type='text' id='avg')
-      p
-        label(for='radio') Радиостанция:
-        input(type='text' id='radio')
-      p
-        label(for='length') Длительность:
-        input(type='text' id='length')
-      input(type='button' value='Найти')
-  details
-    summary Сортировка
-    form
-      p
-        | Первый уровень:
-        select(name='sortFirst')
-          option(value='0') Нет
-          option(value='1') Название
-          option(value='2') Включений за месяц
-          option(value='3') Среднее время прослушивания
-          option(value='4') Радиостанция
-          option(value='6') Длительность
-        |             по убыванию? 
-        input(type='checkbox' name='descFirst')
-      p
-        | Второй уровень:
-        select(name='sortSecond')
-          option(value='0') Нет
-          option(value='1') Название
-          option(value='2') Включений за месяц
-          option(value='3') Среднее время прослушивания
-          option(value='4') Радиостанция
-          option(value='6') Длительность
-        |             по убыванию? 
-        input(type='checkbox' name='descSecond')
-      p
-        | Третий уровень:
-        select(name='sortThird')
-          option(value='0') Нет
-          option(value='1') Название
-          option(value='2') Включений за месяц
-          option(value='3') Среднее время прослушивания
-          option(value='4') Радиостанция
-          option(value='6') Длительность
-        |             по убыванию? 
-        input(type='checkbox' name='descThird')
-      input(type='button' value='Сортировать')
-  br
-  table
+  details(open)
+    summary Дополнительно
+    .row
+      .col-md-6
+        .row
+          .col-12
+            p.h3 График
+            form
+              table.table.table-dark.table-borderless
+                tbody
+                  tr.table-secondary
+                    th Значениe по оси OX
+                    th Результат
+                  tr
+                    td
+                      input(type='radio' name='ox1' value='0')
+                      label.form-label(for='ox1') Среднее время прослушивания
+                    td
+                      input(type='checkbox' name='oy1' value='0')
+                      label.form-label(for='oy1') Радиостанция
+                  tr
+                    td
+                      input(type='radio' name='ox2' value='1')
+                      label.form-label(for='ox2') Длительность
+                    td
+                      input(type='checkbox' name='oy2' value='1')
+                      label.form-label(for='oy2') Количество треков
+                  tr
+                    td
+                      input(type='radio' name='ox3' value='3')
+                      label.form-label(for='ox3') Включений за месяц
+                    td
+                      input(type='checkbox' name='oy3' value='3')
+                      label.form-label(for='oy3') Разница в С.В.П. и Д.
+          .col-12
+            button(type='submit') Построить
+            p Здесь будет график
+              
+            p.h3 Сортировка
+            form#sort-form(method="post" onsubmit='return SortByForm(event)')
+              table.table.table-dark
+                thead 
+                  tr
+                    th Уровни сортировки
+                    th Порядок сортировки
+                tbody
+                  tr
+                    td 
+                      select.form-select(name='sort-1')
+                        option(value='0') Нет
+                        option(value='1') Название
+                        option(value='2') Включений за месяц
+                        option(value='3') Среднее время прослушивания
+                        option(value='4') Радиостанция
+                        option(value='5') Длительность
+                    td 
+                      input.btn.btn-secondary(type='button' name='sort-btn-1' value='По возрастанию')
+                  tr
+                    td 
+                      select.form-select(name='sort-2' disabled)
+                        option(value='0') Нет
+                        option(value='1') Название
+                        option(value='2') Включений за месяц
+                        option(value='3') Среднее время прослушивания
+                        option(value='4') Радиостанция
+                        option(value='5') Длительность
+                    td 
+                      input.btn.btn-secondary(type='button' name='sort-btn-2' value='По возрастанию')
+                  tr
+                    td 
+                      select.form-select(name='sort-3' disabled)
+                        option(value='0') Нет
+                        option(value='1') Название
+                        option(value='2') Включений за месяц
+                        option(value='3') Среднее время прослушивания
+                        option(value='4') Радиостанция
+                        option(value='5') Длительность
+                    td 
+                      input.btn.btn-secondary(type='button' name='sort-btn-3' value='По возрастанию')
+              button(type='submit') Сортировать
+
+      .col-md-6
+        p.h3 Фильтр
+        form#filter-form(method="post" onsubmit='return FilterByForm(event)')
+          p
+            label.form-label(for='name') Название:
+            input.form-control(type='text' id='name' placeholder='Введите название...')
+          p
+            label.form-label(for='vkl') Включений за месяц:
+            input.form-control(type='text' id='vkl' placeholder='Введите количество включений...')
+          p
+            label.form-label(for='avgmin') Минимальное среднее время прослушивания:
+            input.form-control(type='text' id='avgmin' placeholder='Введите минимальное среднее время прослушивания...')
+          p
+            label.form-label(for='avgmax') Максимальное среднее время прослушивания:
+            input.form-control(type='text' id='avgmax' placeholder='Введите максимальное среднее время прослушивания...')
+          p
+            label.form-label(for='radio') Радиостанция:
+            input.form-control(type='text' id='radio' placeholder='Введите название радиостанции...')
+          p
+            label.form-label(for='lengthmin') Минммальную длительность трека:
+            input.form-control(type='text' id='lengthmin' placeholder='Введите минммальную длительность...')
+          p
+            label.form-label(for='lengthmax') Максимальную длительность трека:
+            input.form-control(type='text' id='lengthmax' placeholder='Введите максимальную длительность...')
+          button(type='submit') Найти
+
+  table.table.table-dark.table-striped.table-bordered(id='table')
     thead
-      tr
-        th Название
-        th Включений за месяц
-        th Среднее время прослушивания
-        th Радиостанция
-        th Длительность
+      tr.table-secondary
+        th(onclick='SortByTh(this)') Название
+        th(onclick='SortByTh(this)') Включений за месяц
+        th(onclick='SortByTh(this)') Среднее время прослушивания
+        th(onclick='SortByTh(this)') Радиостанция
+        th(onclick='SortByTh(this)') Длительность
     tbody
       tr
         td SHAMAN — ВЫЗОВ саундтрек к шоу ТНТ Вызов
