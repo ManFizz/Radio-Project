@@ -3,7 +3,7 @@
 const gulp = require('gulp');
 const sass = require('gulp-sass')(require('sass'));
 const pug = require('gulp-pug');
-const browsersync = require('browser-sync').create();
+const browserSync = require('browser-sync').create();
 
 //Create Tree
 gulp.task('tree', function(){
@@ -49,11 +49,11 @@ gulp.task('watch', function(){
 
 //Update browser on update files
 gulp.task('serve', function(){
-  browsersync.init({
+  browserSync.init({
     server: 'dist'
   });
 
-  browsersync.watch('dist/**/*.*').on('change', browsersync.reload);
+  browserSync.watch('dist/**/*.*').on('change', browserSync.reload);
 });
 
 //Move all files from src to dist folder

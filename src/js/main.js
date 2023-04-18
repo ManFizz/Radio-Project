@@ -1,7 +1,7 @@
 let table;
 let form;
 let selectors;
-let sortBtns;
+let sortBtnArray;
 document.addEventListener("DOMContentLoaded", () => {
     table = document.getElementById('table');
     BuildSortForm();
@@ -10,11 +10,11 @@ document.addEventListener("DOMContentLoaded", () => {
 function BuildSortForm() {
     form = document.getElementById('sort-form');
     selectors = form.querySelectorAll('select');
-    sortBtns = form.querySelectorAll('input[type=button]');
+    sortBtnArray = form.querySelectorAll('input[type=button]');
     selectors.forEach ( s => {
         s.addEventListener('change', function(){
-            if(s == selectors[0]) {
-                if(s.value == '0') {
+            if(s === selectors[0]) {
+                if(s.value === '0') {
                     selectors[1].value = '0';
                     selectors[2].value = '0';
                     selectors[1].disabled = true;
@@ -25,8 +25,8 @@ function BuildSortForm() {
                 }
             }
             
-            if(s == selectors[1]) {
-                if(s.value == '0') {
+            if(s === selectors[1]) {
+                if(s.value === '0') {
                     selectors[2].value = '0';
                     selectors[2].disabled = true;
                 } else {
@@ -44,15 +44,15 @@ function BuildSortForm() {
                 selector.options[parseInt(selectors[1].value)].disabled = true;
                 selector.options[parseInt(selectors[2].value)].disabled = true;
 
-                //Undisabled first
+                //Enable first
                 selector.options[0].disabled = false;
             });
         });
     });
 
-    sortBtns.forEach( btn => {
+    sortBtnArray.forEach(btn => {
         btn.onclick = () => {
-            btn.value = (btn.value == 'По возрастанию') ? 'По убыванию' : 'По возрастанию';
+            btn.value = (btn.value === 'По возрастанию') ? 'По убыванию' : 'По возрастанию';
         };
     });
 }
@@ -79,12 +79,12 @@ function CustomSort(asc1, l1, asc2=null, l2=null, asc3=null, l3=null) {
 }
 
 function SortByForm(e) {
-    if(selectors[0].value == '0')
+    if(selectors[0].value === '0')
         return false;
     
-    CustomSort(sortBtns[0].value[3] == 'в', +selectors[0].value-1,
-    sortBtns[1].value[3] == 'в', selectors[1].value == '0' ? null : +selectors[1].value - 1,
-    sortBtns[2].value[3] == 'в', selectors[2].value == '0' ? null : +selectors[2].value - 1);
+    CustomSort(sortBtnArray[0].value[3] === 'в', +selectors[0].value-1,
+    sortBtnArray[1].value[3] === 'в', selectors[1].value === '0' ? null : +selectors[1].value - 1,
+    sortBtnArray[2].value[3] === 'в', selectors[2].value === '0' ? null : +selectors[2].value - 1);
     return false;
 }
 
@@ -97,21 +97,20 @@ function FilterByForm(e) {
     });
     let name = e.target.querySelector('#name').value.trim();
     let vkl = e.target.querySelector('#vkl').value.trim();
-    let avgmin = parseFloat(e.target.querySelector('#avgmin').value.trim().replace(':','.'));
-    let avgmax = parseFloat(e.target.querySelector('#avgmax').value.trim().replace(':','.'));
+    let avgMin = parseFloat(e.target.querySelector('#avgmin').value.trim().replace(':','.'));
+    let avgMax = parseFloat(e.target.querySelector('#avgmax').value.trim().replace(':','.'));
     let radio = e.target.querySelector('#radio').value.trim();
-    let lengthmin = parseFloat(e.target.querySelector('#lengthmin').value.trim().replace(':','.'));
-    let lengthmax = parseFloat(e.target.querySelector('#lengthmax').value.trim().replace(':','.'));
+    let lengthMin = parseFloat(e.target.querySelector('#lengthmin').value.trim().replace(':','.'));
+    let lengthMax = parseFloat(e.target.querySelector('#lengthmax').value.trim().replace(':','.'));
 
-    //TODO filter - change
     let antiResult = Array.prototype.filter.call(arr, tr => 
-        name.length != 0 && !tr.children[0].textContent.includes(name)
-        || vkl.length != 0 && !tr.children[1].textContent.includes(vkl) 
-        || avgmin.length != 0 && parseFloat(tr.children[2].textContent.replace(':','.')) < avgmin
-        || avgmax.length != 0 && parseFloat(tr.children[2].textContent.replace(':','.')) > avgmax
-        || radio.length != 0 && !tr.children[3].textContent.includes(radio) 
-        || lengthmin.length != 0 && parseFloat(tr.children[4].textContent.replace(':','.')) < lengthmin
-        || lengthmax.length != 0 && parseFloat(tr.children[4].textContent.replace(':','.')) > lengthmax
+        name.length !== 0 && !tr.children[0].textContent.includes(name)
+        || vkl.length !== 0 && !tr.children[1].textContent.includes(vkl)
+        || avgMin.length !== 0 && parseFloat(tr.children[2].textContent.replace(':','.')) < avgMin
+        || avgMax.length !== 0 && parseFloat(tr.children[2].textContent.replace(':','.')) > avgMax
+        || radio.length !== 0 && !tr.children[3].textContent.includes(radio)
+        || lengthMin.length !== 0 && parseFloat(tr.children[4].textContent.replace(':','.')) < lengthMin
+        || lengthMax.length !== 0 && parseFloat(tr.children[4].textContent.replace(':','.')) > lengthMax
     );
     antiResult.forEach( tr => {
         tr.hidden = true;
