@@ -1,443 +1,108 @@
 extends template
 block content
-  details(open)
-    summary Дополнительно
-    .row
-      .col-md-6
-        .row
-          .col-12
-            p.h3 График
-            form
-              table.table.table-dark.table-borderless
-                tbody
-                  tr.table-secondary
-                    th Значениe по оси OX
-                    th Результат
-                  tr
-                    td
-                      input(type='radio' name='ox1' value='0')
-                      label.form-label(for='ox1') Среднее время прослушивания
-                    td
-                      input(type='checkbox' name='oy1' value='0')
-                      label.form-label(for='oy1') Радиостанция
-                  tr
-                    td
-                      input(type='radio' name='ox2' value='1')
-                      label.form-label(for='ox2') Длительность
-                    td
-                      input(type='checkbox' name='oy2' value='1')
-                      label.form-label(for='oy2') Количество треков
-                  tr
-                    td
-                      input(type='radio' name='ox3' value='3')
-                      label.form-label(for='ox3') Включений за месяц
-                    td
-                      input(type='checkbox' name='oy3' value='3')
-                      label.form-label(for='oy3') Разница в С.В.П. и Д.
-          .col-12
-            button(type='submit') Построить
-            p Здесь будет график
-              
-            p.h3 Сортировка
-            form#sort-form(method="post" onsubmit='return SortByForm(event)')
-              table.table.table-dark
-                thead 
-                  tr
-                    th Уровни сортировки
-                    th Порядок сортировки
-                tbody
-                  tr
-                    td 
-                      select.form-select(name='sort-1')
-                        option(value='0') Нет
-                        option(value='1') Название
-                        option(value='2') Включений за месяц
-                        option(value='3') Среднее время прослушивания
-                        option(value='4') Радиостанция
-                        option(value='5') Длительность
-                    td 
-                      input.btn.btn-secondary(type='button' name='sort-btn-1' value='По возрастанию')
-                  tr
-                    td 
-                      select.form-select(name='sort-2' disabled)
-                        option(value='0') Нет
-                        option(value='1') Название
-                        option(value='2') Включений за месяц
-                        option(value='3') Среднее время прослушивания
-                        option(value='4') Радиостанция
-                        option(value='5') Длительность
-                    td 
-                      input.btn.btn-secondary(type='button' name='sort-btn-2' value='По возрастанию')
-                  tr
-                    td 
-                      select.form-select(name='sort-3' disabled)
-                        option(value='0') Нет
-                        option(value='1') Название
-                        option(value='2') Включений за месяц
-                        option(value='3') Среднее время прослушивания
-                        option(value='4') Радиостанция
-                        option(value='5') Длительность
-                    td 
-                      input.btn.btn-secondary(type='button' name='sort-btn-3' value='По возрастанию')
-              button(type='submit') Сортировать
-
-      .col-md-6
-        p.h3 Фильтр
-        form#filter-form(method="post" onsubmit='return FilterByForm(event)')
-          p
-            label.form-label(for='name') Название:
-            input.form-control(type='text' id='name' placeholder='Введите название...')
-          p
-            label.form-label(for='vkl') Включений за месяц:
-            input.form-control(type='text' id='vkl' placeholder='Введите количество включений...')
-          p
-            label.form-label(for='avgmin') Минимальное среднее время прослушивания:
-            input.form-control(type='text' id='avgmin' placeholder='Введите минимальное среднее время прослушивания...')
-          p
-            label.form-label(for='avgmax') Максимальное среднее время прослушивания:
-            input.form-control(type='text' id='avgmax' placeholder='Введите максимальное среднее время прослушивания...')
-          p
-            label.form-label(for='radio') Радиостанция:
-            input.form-control(type='text' id='radio' placeholder='Введите название радиостанции...')
-          p
-            label.form-label(for='lengthmin') Минммальную длительность трека:
-            input.form-control(type='text' id='lengthmin' placeholder='Введите минммальную длительность...')
-          p
-            label.form-label(for='lengthmax') Максимальную длительность трека:
-            input.form-control(type='text' id='lengthmax' placeholder='Введите максимальную длительность...')
-          button(type='submit') Найти
-
+  .row
+    .col-12
+      svg#graph
+    .col-md-6
+      .row
+        .col-12
+          p.h3 График
+          form#graph-form
+            table.table.table-dark.table-borderless
+              tbody
+                tr.table-secondary
+                  th Значениe по оси OX
+                  th Результат
+                tr
+                  td
+                    input(type='radio' id='ox1' value='Среднее время прослушивания' name="axis-x")
+                    label.form-label(for='ox1') Среднее время прослушивания
+                  td
+                    input(type='radio' id='oy1' value='Радиостанция' name="axis-y")
+                    label.form-label(for='oy1') Радиостанция
+                tr
+                  td
+                    input(type='radio' id='ox2' value='Длительность' name="axis-x")
+                    label.form-label(for='ox2') Длительность
+                  td
+                    input(type='radio' id='oy2' value='Включений за месяц' name="axis-y")
+                    label.form-label(for='oy2') Включений за месяц
+                tr
+                  td
+                    input(type='radio' id='ox3' value='Включений за месяц' name="axis-x")
+                    label.form-label(for='ox3') Включений за месяц
+            button(type='button' class="btn btn-primary") Построить
+        .col-12
+          p.h3 Сортировка
+          form#sort-form(method="post" onsubmit='return SortByForm(event)')
+            table.table.table-dark
+              thead
+                tr
+                  th Уровни сортировки
+                  th Порядок сортировки
+              tbody
+                tr
+                  td
+                    select.form-select(name='sort-1')
+                      option(value='0') Нет
+                      option(value='1') Название
+                      option(value='2') Включений за месяц
+                      option(value='3') Среднее время прослушивания
+                      option(value='4') Радиостанция
+                      option(value='5') Длительность
+                  td
+                    input.btn.btn-secondary(type='button' name='sort-btn-1' value='По возрастанию')
+                tr
+                  td
+                    select.form-select(name='sort-2' disabled)
+                      option(value='0') Нет
+                      option(value='1') Название
+                      option(value='2') Включений за месяц
+                      option(value='3') Среднее время прослушивания
+                      option(value='4') Радиостанция
+                      option(value='5') Длительность
+                  td
+                    input.btn.btn-secondary(type='button' name='sort-btn-2' value='По возрастанию')
+                tr
+                  td
+                    select.form-select(name='sort-3' disabled)
+                      option(value='0') Нет
+                      option(value='1') Название
+                      option(value='2') Включений за месяц
+                      option(value='3') Среднее время прослушивания
+                      option(value='4') Радиостанция
+                      option(value='5') Длительность
+                  td
+                    input.btn.btn-secondary(type='button' name='sort-btn-3' value='По возрастанию')
+            button(type='submit' class="btn btn-primary") Сортировать
+    .col-md-6
+      p.h3 Фильтр
+      form#filter-form(method="post" onsubmit='return FilterByForm(event)')
+        p
+          label.form-label(for='name') Название:
+          input.form-control(type='text' id='name' placeholder='Введите название...')
+        p
+          label.form-label(for='vkl') Включений за месяц:
+          input.form-control(type='text' id='vkl' placeholder='Введите количество включений...')
+        p
+          label.form-label(for='avgMin') Минимальное среднее время прослушивания:
+          input.form-control(type='text' id='avgMin' placeholder='Введите минимальное среднее время прослушивания...')
+        p
+          label.form-label(for='avgMax') Максимальное среднее время прослушивания:
+          input.form-control(type='text' id='avgMax' placeholder='Введите максимальное среднее время прослушивания...')
+        p
+          label.form-label(for='radio') Радиостанция:
+          input.form-control(type='text' id='radio' placeholder='Введите название радиостанции...')
+        p
+          label.form-label(for='lengthMin') Минимальную длительность трека:
+          input.form-control(type='text' id='lengthMin' placeholder='Введите минимальную длительность...')
+        p
+          label.form-label(for='lengthMax') Максимальную длительность трека:
+          input.form-control(type='text' id='lengthMax' placeholder='Введите максимальную длительность...')
+        button(type='submit' class="btn btn-primary") Найти
+  hr
+  button#ToggleTable(class="btn btn-primary mb-3")
   table.table.table-dark.table-striped.table-bordered(id='table')
     thead
-      tr.table-secondary
-        th(onclick='SortByTh(this)') Название
-        th(onclick='SortByTh(this)') Включений за месяц
-        th(onclick='SortByTh(this)') Среднее время прослушивания
-        th(onclick='SortByTh(this)') Радиостанция
-        th(onclick='SortByTh(this)') Длительность
     tbody
-      tr
-        td SHAMAN — ВЫЗОВ саундтрек к шоу ТНТ Вызов
-        td 37
-        td 2:49
-        td Авторадио
-        td 3:19
-      tr
-        td Фейгин - Ливни Листопады
-        td 36
-        td 2:06
-        td Авторадио
-        td 2:16
-      tr
-        td Mary Gu - Калифорния
-        td 34
-        td 7:27
-        td Авторадио
-        td 7:37
-      tr
-        td Винтаж — Лети за солнцем Filatov & Karas Mix
-        td 34
-        td 9:23
-        td Авторадио
-        td 9:33
-      tr
-        td DJ SMASH & NIVESTA - Позвони
-        td 34
-        td 8:16
-        td Авторадио
-        td 8:26
-      tr
-        td Все Звёзды - Гимн Авторадио
-        td 33
-        td 6:20
-        td Авторадио
-        td 6:30
-      tr
-        td Люся Чеботина - ПЛАКАЛ ГОЛЛИВУД
-        td 32
-        td 3:44
-        td Авторадио
-        td 3:54
-      tr
-        td Сергей Лазарев - Танцуй
-        td 29
-        td 4:30
-        td Авторадио
-        td 4:40
-      tr
-        td ANIVAR - Билет в бесконечность
-        td 27
-        td 5:07
-        td Авторадио
-        td 5:17
-      tr
-        td Burito - Она
-        td 27
-        td 5:34
-        td Авторадио
-        td 6:44
-      tr
-        td Моя Мишель Dose - Пташка
-        td 26
-        td 7:07
-        td Авторадио
-        td 8:17
-      tr
-        td Владимир Пресняков – Синяя птица
-        td 24
-        td 2:12
-        td Авторадио
-        td 2:22
-      tr
-        td Люся Чеботина - Солнце Монако
-        td 19
-        td 7:18
-        td Авторадио
-        td 8:28
-      tr
-        td JONY - Никак
-        td 17
-        td 5:35
-        td Авторадио
-        td 5:45
-      tr
-        td DJ SMASH Artik & Asti - CO2
-        td 16
-        td 6:20
-        td Авторадио
-        td 6:30
-      tr
-        td Zivert - WAKE UP
-        td 16
-        td 1:42
-        td Авторадио
-        td 1:52
-      tr
-        td Ваня Дмитриенко - Вечно молодым OST "Струны"
-        td 16
-        td 8:40
-        td Авторадио
-        td 8:50
-      tr
-        td Звонкий – Вот и всё
-        td 15
-        td 3:40
-        td Авторадио
-        td 3:50
-      tr
-        td Dabro - Мне не страшно Песня про брата
-        td 15
-        td 5:05
-        td Авторадио
-        td 6:15
-      tr
-        td Лолита & Коста Лакоста — По-другому
-        td 15
-        td 1:24
-        td Авторадио
-        td 1:34
-      tr
-        td Татьяна Буланова - Поезда
-        td 29
-        td 4:21
-        td Дорожное радио
-        td 4:50
-      tr
-        td Владимир Пресняков – У тебя есть я
-        td 29
-        td 2:49
-        td Дорожное радио
-        td 3:15
-      tr
-        td Денис Клявер - Тебя удача найдёт
-        td 27
-        td 5:01
-        td Дорожное радио
-        td 5:28
-      tr
-        td Денис Майданов - Молодость моя
-        td 26
-        td 3:45
-        td Дорожное радио
-        td 3:45
-      tr
-        td Группа ПЯТЕRО и Лев Лещенко с песней "Все было да прошло"
-        td 25
-        td 3:04
-        td Дорожное радио
-        td 3:23
-      tr
-        td Александр Устюгов - Попутчица
-        td 25
-        td 4:21
-        td Дорожное радио
-        td 5:24
-      tr
-        td Лолита – Грустная танцую
-        td 24
-        td 1:50
-        td Дорожное радио
-        td 2:10
-      tr
-        td Валерия - Потеряла сердце
-        td 24
-        td 5:32
-        td Дорожное радио
-        td 5:42
-      tr
-        td Елена Воробей Красное и белое
-        td 21
-        td 1:27
-        td Дорожное радио
-        td 1:28
-      tr
-        td Dabro - Мне не страшно Песня про брата
-        td 17
-        td 6:00
-        td Дорожное радио
-        td 6:50
-      tr
-        td Александр Иванов и группа Рондо — Стрелой
-        td 16
-        td 1:40
-        td Дорожное радио
-        td 1:50
-      tr
-        td Юлия Проскурякова - Журавлик I Новая Красивая песня о любви I
-        td 15
-        td 1:32
-        td Дорожное радио
-        td 1:32
-      tr
-        td ANNA ASTI & Филипп Киркоров — Хобби
-        td 15
-        td 5:18
-        td Дорожное радио
-        td 6:16
-      tr
-        td ANIVAR - Билет в бесконечность
-        td 15
-        td 2:49
-        td Дорожное радио
-        td 2:51
-      tr
-        td JONY - Титры
-        td 54
-        td 4:49
-        td Русское радио
-        td 5:49
-      tr
-        td EMIN - на обратной стороне
-        td 50
-        td 5:28
-        td Русское радио
-        td 5:48
-      tr
-        td ХАННА - Море
-        td 48
-        td 3:17
-        td Русское радио
-        td 3:27
-      tr
-        td Ночь расскажет
-        td 47
-        td 1:15
-        td Русское радио
-        td 1:25
-      tr
-        td ANNA ASTI - По барам
-        td 44
-        td 2:36
-        td Русское радио
-        td 2:46
-      tr
-        td Слава Анна Семенович – Бумеранг
-        td 43
-        td 2:48
-        td Русское радио
-        td 2:58
-      tr
-        td Filatov & Karas — Движ
-        td 43
-        td 5:17
-        td Русское радио
-        td 5:27
-      tr
-        td Сергей Лазарев - Танцуй
-        td 41
-        td 6:30
-        td Русское радио
-        td 6:40
-      tr
-        td Ирина Дубцова & Natan – Давай обнимемся в последний раз
-        td 40
-        td 4:12
-        td Русское радио
-        td 4:22
-      tr
-        td Полина Гагарина & Дима Билан ― Души сингла
-        td 39
-        td 2:24
-        td Русское радио
-        td 2:34
-      tr
-        td Владимир Пресняков – Синяя птица
-        td 38
-        td 2:01
-        td Русское радио
-        td 2:11
-      tr
-        td Лариса Долина - Двое На Ветру Clip Remastered
-        td 38
-        td 1:11
-        td Русское радио
-        td 1:21
-      tr
-        td Artik & Asti - Гармония
-        td 34
-        td 5:19
-        td Русское радио
-        td 5:29
-      tr
-        td Наталья Подольская - Такая сильная любовь
-        td 32
-        td 1:27
-        td Русское радио
-        td 1:37
-      tr
-        td Марина Бриз - Не трогай меня
-        td 32
-        td 3:17
-        td Русское радио
-        td 3:27
-      tr
-        td Юлия Савичева - Синоптики
-        td 31
-        td 4:36
-        td Русское радио
-        td 4:46
-      tr
-        td Стас Костюшкин - Останешься
-        td 31
-        td 5:20
-        td Русское радио
-        td 5:30
-      tr
-        td Dabro - Услышит весь район
-        td 31
-        td 4:05
-        td Русское радио
-        td 4:15
-      tr
-        td Люся Чеботина - Солнце Монако
-        td 30
-        td 3:12
-        td Русское радио
-        td 3:22
-      tr
-        td Валерия — Синица OST Я хочу Я буду
-        td 30
-        td 2:02
-        td Русское радио
-        td 2:12
   hr

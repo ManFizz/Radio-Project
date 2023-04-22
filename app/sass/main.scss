@@ -12,3 +12,24 @@
     font-size: 0.6em;
   }
 }
+
+.axis {
+  font: 10px sans-serif;
+
+  path, line {
+    fill: none;
+    stroke: white;
+    shape-rendering: crispEdges;
+    stroke-width: 1px;
+  }
+}
+
+svg#graph {
+  margin-left: 30px;
+  overflow: visible;
+  margin-bottom: 30px;
+}
+
+.rec {
+  fill: white;
+}
