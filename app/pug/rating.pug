@@ -1,7 +1,7 @@
 extends template
 block content
   .row
-    .col-12
+    .col-md-12
       svg#graph
     .col-md-6
       .row
@@ -31,10 +31,9 @@ block content
                   td
                     input(type='radio' id='ox3' value='Включений за месяц' name="axis-x")
                     label.form-label(for='ox3') Включений за месяц
-            button(type='button' class="btn btn-primary") Построить
         .col-12
           p.h3 Сортировка
-          form#sort-form(method="post" onsubmit='return SortByForm(event)')
+          form#sort-form(method="post")
             table.table.table-dark
               thead
                 tr
@@ -77,7 +76,7 @@ block content
             button(type='submit' class="btn btn-primary") Сортировать
     .col-md-6
       p.h3 Фильтр
-      form#filter-form(method="post" onsubmit='return FilterByForm(event)')
+      form#filter-form(method="post")
         p
           label.form-label(for='name') Название:
           input.form-control(type='text' id='name' placeholder='Введите название...')

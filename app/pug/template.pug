@@ -6,16 +6,26 @@ html(lang='ru')
     link(rel="stylesheet", href="css/bootstrap.min.css")
     link(rel="stylesheet", href="css/photoswipe.css")
     script(type="module" src="https://d3js.org/d3.v7.min.js")
-    script(type="text/javascript" src="js/photoswipe.esm.js")
-    script(type="text/javascript" src="js/photoswipe-lightbox.esm.js")
+    script(type="module" src="js/photoswipe.esm.js")
+    script(type="module" src="js/photoswipe-lightbox.esm.js")
+    script(type='module').
+      import PhotoSwipeLightbox from './js/photoswipe-lightbox.esm.js';
+      const lightbox = new PhotoSwipeLightbox({
+      gallery: '#gallery',
+      children: 'a',
+      pswpModule: () => import('./js/photoswipe.esm.js')
+      });
+      lightbox.init();
+
     script(type="text/javascript" src="js/data.js")
     script(type="module" src="js/main.js")
+    script(type="module" src="js/d3-main.js")
   body
     .container.pe-5.ps-5.pb-5.bg-dark.text-white
       nav.navbar.navbar-expand-sm.bg-dark.navbar-dark.fixed-top
         .container-fluid
           ul.navbar-nav
-            each name, link in {'index.html':'Главная', 'rating.html':'Самые прослушиваемые треки', '#1':'Лучшие радиостанции', '#2':'Новости'}
+            each name, link in {'index.html':'Главная', 'rating.html':'Самые прослушиваемые треки', 'best.html':'Лучшие радиостанции', 'news.html':'Новости'}
               li.nav-item
                 a.nav-link(href=link) #{name}
       hr

@@ -1,0 +1,20 @@
+extends template
+block content
+    .row
+        .col-md-3
+            .card(class="bg-secondary p-3")
+                svg#Epicycloid
+                label(for="count-graph" class="form-label") Задайте количество кружков
+                input(type="range" min="0" max="200" id="count-graph" value="15" class="form-range")
+        .col-md-9
+            .card(class="bg-secondary p-3")
+                svg#Function
+                svg#Axis
+                label(for="count-graph" class="form-label") Задайте ограничение по оси X
+                div
+                    label(for="checkBox") Активация симметрии
+                    input#checkBox(type="checkbox")
+                    h2
+                        span.badge.bg-dark#values -10 < x < 10
+                input(type="range" min="-300" max="300" step="5" id="restrict-x-min" value="-10" class="form-range")
+                input(type="range" min="-300" max="300" step="5" id="restrict-x-max" value="10" class="form-range")

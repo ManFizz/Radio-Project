@@ -33,3 +33,23 @@ svg#graph {
 .rec {
   fill: white;
 }
+
+svg#Axis {
+  position: absolute;
+
+  g {
+    stroke-width: 0.05em;
+    font-size: 0.4em;
+    opacity: 0.75;
+  }
+}
+
+#Function {
+  transform: scale(1, -1);
+  
+  path {
+    stroke: red;
+    fill:transparent;
+    stroke-width: 0.2;
+  }
+}
